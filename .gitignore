@@ -8,4 +8,23 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Plans (private)
 plans/
+
+# Environment variables — NEVER commit
+.env
+
+# Database files
+*.db
+*.sqlite
+
+# Docker volumes
+docker/volumes/
+chroma_data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
