@@ -10,7 +10,7 @@ from applyflow.schemas.enums import ApplicationStatus
 
 
 async def create_job(session: AsyncSession, job: Job) -> Job:
-    """Yeni bir ilanı DB'ye kaydet."""
+    """Save a new job to the DB."""
     session.add(job)
     await session.commit()
     await session.refresh(job)
@@ -18,7 +18,7 @@ async def create_job(session: AsyncSession, job: Job) -> Job:
 
 
 async def get_job(session: AsyncSession, job_id: uuid.UUID) -> Job | None:
-    """ID ile ilan getir."""
+    """Get job by ID."""
     result = await session.execute(select(Job).where(Job.id == job_id))
     return result.scalar_one_or_none()
 
@@ -29,7 +29,7 @@ async def get_jobs_by_status(
     limit: int = 100,
     offset: int = 0,
 ) -> list[Job]:
-    """Belirli bir durumdaki ilanları listele."""
+    """List jobs in a specific status."""
     result = await session.execute(
         select(Job).where(Job.status == status).offset(offset).limit(limit)
     )
@@ -41,7 +41,7 @@ async def get_all_jobs(
     limit: int = 100,
     offset: int = 0,
 ) -> list[Job]:
-    """Tüm ilanları listele."""
+    """List all jobs."""
     result = await session.execute(select(Job).offset(offset).limit(limit))
     return list(result.scalars().all())
 
@@ -52,7 +52,7 @@ async def update_job_status(
     new_status: ApplicationStatus,
     note: str | None = None,
 ) -> Job | None:
-    """İlanın durumunu güncelle ve audit log kaydı oluştur."""
+    """Update job status and create audit log record."""
     job = await get_job(session, job_id)
     if job is None:
         return None
@@ -74,6 +74,6 @@ async def update_job_status(
 
 
 async def job_exists_by_url(session: AsyncSession, url: str) -> bool:
-    """URL'e göre çift kayıt kontrolü."""
+    """Duplicate record check by URL."""
     result = await session.execute(select(Job.id).where(Job.url == url))
     return result.first() is not None

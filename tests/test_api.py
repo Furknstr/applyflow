@@ -1,7 +1,7 @@
 """
-FastAPI uygulama testleri — TestClient ile in-process test.
+FastAPI application tests — in-process testing with TestClient.
 
-DB bağımlılığı override edilir, gerçek PostgreSQL gerekmez.
+DB dependency is overridden, real PostgreSQL is not required.
 """
 
 from collections.abc import AsyncGenerator
@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
 
-import applyflow.models  # noqa: F401 — SQLModel.metadata kaydı için
+import applyflow.models  # noqa: F401 — for SQLModel.metadata registration
 from applyflow.api.app import app
 from applyflow.db.session import get_session
 
@@ -38,7 +38,7 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
 
 @pytest.fixture
 def client(db_session: AsyncSession) -> TestClient:
-    """DB bağımlılığı override edilmiş TestClient."""
+    """TestClient with overridden DB dependency."""
 
     async def override_get_session() -> AsyncGenerator[AsyncSession, None]:
         yield db_session
@@ -117,7 +117,7 @@ def test_get_match_not_found(client: TestClient) -> None:
 
 
 # ---------------------------------------------------------------------------
-# OpenAPI schema — tüm route'ların kayıtlı olduğunu doğrula
+# OpenAPI schema — verify that all routes are registered
 # ---------------------------------------------------------------------------
 
 

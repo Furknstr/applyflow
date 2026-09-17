@@ -1,6 +1,6 @@
 """
-Candidates router — aday profili yönetimi.
-Faz 3'te RAG entegrasyonu ile genişletilecek.
+Candidates router — candidate profile management.
+To be expanded with RAG integration in Phase 3.
 """
 
 import logging
@@ -11,5 +11,5 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/candidates", tags=["candidates"])
 
-# Faz 3'te CandidateProfile modeli DB'ye taşınacak ve
-# CRUD endpoint'leri buraya eklenecek.
+# In Phase 3, CandidateProfile model will be moved to DB and
+# CRUD endpoints will be added here.

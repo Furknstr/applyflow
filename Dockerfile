@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
 # ─────────────────────────────────────────────────────────────────────────────
-# Stage 1 — Build: bağımlılıkları kur
+# Stage 1 — Build: install dependencies
 # ─────────────────────────────────────────────────────────────────────────────
 FROM python:3.13-slim AS builder
 
-# uv — hızlı Python paket yöneticisi
+# uv — fast Python package manager
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 ENV UV_COMPILE_BYTECODE=1 \
@@ -13,43 +13,43 @@ ENV UV_COMPILE_BYTECODE=1 \
 
 WORKDIR /app
 
-# Sadece dependency dosyalarını kopyala (layer cache için)
+# Copy only dependency files (for layer cache)
 COPY pyproject.toml uv.lock README.md ./
 
-# Bağımlılıkları sanal ortama kur (dev hariç)
+# Install dependencies to virtual environment (excluding dev)
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Stage 2 — Runtime: minimal çalışma imajı
+# Stage 2 — Runtime: minimal runtime image
 # ─────────────────────────────────────────────────────────────────────────────
 FROM python:3.13-slim AS runtime
 
-# Güvenlik: root olmayan kullanıcı
+# Security: non-root user
 RUN groupadd --system applyflow && \
     useradd --system --gid applyflow --home /app --shell /sbin/nologin applyflow
 
 WORKDIR /app
 
-# Build stage'den sanal ortamı kopyala
+# Copy virtual environment from build stage
 COPY --from=builder /app/.venv /app/.venv
 
-# Uygulama kaynak kodunu kopyala
+# Copy application source code
 COPY src/ ./src/
 COPY alembic/ ./alembic/
 COPY alembic.ini ./
 COPY main.py ./
 
-# PATH'e venv'i ekle
+# Add venv to PATH
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONPATH="/app/src" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# Kullanıcıya geç
+# Switch to user
 USER applyflow
 
 EXPOSE 8000
 
-# Başlangıç: migration çalıştır, ardından sunucuyu başlat
+# Entrypoint: run migration, then start server
 CMD ["sh", "-c", "python -m alembic upgrade head && uvicorn applyflow.api.app:app --host 0.0.0.0 --port 8000 --workers 1"]

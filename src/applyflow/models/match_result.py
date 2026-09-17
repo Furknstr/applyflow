@@ -6,7 +6,7 @@ from sqlmodel import Field, SQLModel
 
 
 class MatchResult(SQLModel, table=True):
-    """Matcher Agent çıktısı — bir ilan için eşleşme sonucu."""
+    """Matcher Agent output — match result for a job."""
 
     __tablename__ = "match_results"
 

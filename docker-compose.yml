@@ -1,11 +1,11 @@
 # ApplyFlow — Docker Compose
-# Servisler: api (FastAPI), db (PostgreSQL 16), chroma (ChromaDB)
+# Services: api (FastAPI), db (PostgreSQL 16), chroma (ChromaDB)
 #
-# Başlatmak için:
-#   cp .env.example .env   # ve değerleri düzenle
+# To start:
+#   cp .env.example .env   # and edit values
 #   docker compose up -d
 #
-# Migration (ilk kurulumda otomatik çalışır, elle de tetiklenebilir):
+# Migration (runs automatically on first setup, can be triggered manually):
 #   docker compose exec api python -m alembic upgrade head
 
 name: applyflow
@@ -79,7 +79,7 @@ services:
         condition: service_healthy
     networks:
       - applyflow_net
-    # Ollama host.docker.internal üzerinden erişilebilir (Linux için extra_hosts gerekli)
+    # Ollama is accessible via host.docker.internal (extra_hosts required for Linux)
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

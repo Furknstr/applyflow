@@ -1,9 +1,9 @@
 """
-ApplyFlow — uygulama giriş noktası.
+ApplyFlow — application entry point.
 
-Geliştirme ortamında çalıştırmak için:
+To run in the development environment:
     uv run python main.py
-    # veya
+    # or
     uv run uvicorn applyflow.api.app:app --reload
 """
 

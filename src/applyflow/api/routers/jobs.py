@@ -1,6 +1,6 @@
 """
-Jobs router — ilanların CRUD ve durum yönetimi.
-Faz 2'de adaptörler ile genişletilecek.
+Jobs router — CRUD and status management for job postings.
+To be expanded with adapters in Phase 2.
 """
 
 import uuid
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
-@router.get("/", summary="Tüm ilanları listele")
+@router.get("/", summary="List all jobs")
 async def list_jobs(
     status: ApplicationStatus | None = None,
     limit: int = 100,
@@ -38,7 +38,7 @@ async def list_jobs(
     return await get_all_jobs(session, limit=limit, offset=offset)
 
 
-@router.get("/{job_id}", summary="İlan detayı getir")
+@router.get("/{job_id}", summary="Get job details")
 async def get_job_detail(
     job_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
@@ -49,7 +49,7 @@ async def get_job_detail(
     return job
 
 
-@router.patch("/{job_id}/status", summary="İlan durumunu güncelle")
+@router.patch("/{job_id}/status", summary="Update job status")
 async def patch_job_status(
     job_id: uuid.UUID,
     new_status: ApplicationStatus,

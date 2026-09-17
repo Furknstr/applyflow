@@ -1,7 +1,7 @@
 """
-DB katmanı testleri — SQLite in-memory DB kullanır (PostgreSQL gerektirmez).
+DB layer tests — uses SQLite in-memory DB (does not require PostgreSQL).
 
-Her test için izole bir DB ve session oluşturulur.
+An isolated DB and session is created for each test.
 """
 
 import uuid
@@ -12,7 +12,7 @@ import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
 
-# Modelleri import et — SQLModel.metadata'ya kayıt olsunlar
+# Import models — so they get registered to SQLModel.metadata
 import applyflow.models  # noqa: F401
 
 from applyflow.models.job import Job
@@ -43,7 +43,7 @@ SQLITE_URL = "sqlite+aiosqlite:///:memory:"
 
 @pytest_asyncio.fixture
 async def session() -> AsyncGenerator[AsyncSession, None]:
-    """Her test için temiz bir in-memory SQLite session."""
+    """A clean in-memory SQLite session for each test."""
     engine = create_async_engine(SQLITE_URL, connect_args={"check_same_thread": False})
 
     async with engine.begin() as conn:

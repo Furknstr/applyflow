@@ -1,10 +1,10 @@
 """
-Ana FastAPI uygulama modülü.
+Main FastAPI application module.
 
-Başlatma sırası:
-  1. Lifespan context — DB engine kontrolü
+Startup sequence:
+  1. Lifespan context — DB engine check
   2. Middleware — CORS, logging
-  3. Router kayıtları
+  3. Router registrations
 """
 
 import logging
@@ -33,7 +33,7 @@ logging.basicConfig(
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    """Uygulama başlangıç / bitiş kancaları."""
+    """Application startup / shutdown hooks."""
     logger.info("ApplyFlow starting up…")
     yield
     logger.info("ApplyFlow shutting down…")
@@ -63,7 +63,7 @@ app.add_middleware(
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next: object) -> Response:
-    """Her isteği latency ile logla."""
+    """Log each request with latency."""
     start = time.perf_counter()
     response: Response = await call_next(request)  # type: ignore[operator]
     elapsed_ms = (time.perf_counter() - start) * 1000
@@ -82,7 +82,7 @@ async def log_requests(request: Request, call_next: object) -> Response:
 # ---------------------------------------------------------------------------
 
 
-@app.get("/health", tags=["system"], summary="Servis sağlık kontrolü")
+@app.get("/health", tags=["system"], summary="Service health check")
 async def health() -> dict[str, str]:
     return {"status": "ok", "version": settings.app_version}
 

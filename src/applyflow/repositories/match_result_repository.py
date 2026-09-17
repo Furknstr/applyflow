@@ -9,7 +9,7 @@ from applyflow.models.match_result import MatchResult
 async def create_match_result(
     session: AsyncSession, match_result: MatchResult
 ) -> MatchResult:
-    """Eşleşme sonucunu kaydet."""
+    """Save match result."""
     session.add(match_result)
     await session.commit()
     await session.refresh(match_result)
@@ -19,7 +19,7 @@ async def create_match_result(
 async def get_match_result_by_job(
     session: AsyncSession, job_id: uuid.UUID
 ) -> MatchResult | None:
-    """Belirli bir ilanın en son eşleşme sonucunu getir."""
+    """Get the latest match result for a specific job."""
     result = await session.execute(
         select(MatchResult)
         .where(MatchResult.job_id == job_id)

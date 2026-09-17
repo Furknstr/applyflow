@@ -1,6 +1,6 @@
 """
-Cover-letters router — ön yazı taslakları.
-Faz 4'te Writer Agent entegre edilecek.
+Cover-letters router — cover letter drafts.
+Writer Agent will be integrated in Phase 4.
 """
 
 import uuid
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/cover-letters", tags=["cover-letters"])
 
 
-@router.get("/{cover_letter_id}", summary="Ön yazı taslağını getir")
+@router.get("/{cover_letter_id}", summary="Get cover letter draft")
 async def get_cover_letter_detail(
     cover_letter_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
@@ -37,7 +37,7 @@ async def get_cover_letter_detail(
     return cl
 
 
-@router.get("/by-job/{job_id}", summary="İlana ait ön yazıyı getir")
+@router.get("/by-job/{job_id}", summary="Get cover letter for job")
 async def get_cover_letter_by_job_id(
     job_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
@@ -51,7 +51,7 @@ async def get_cover_letter_by_job_id(
     return cl
 
 
-@router.patch("/{cover_letter_id}/status", summary="Ön yazı durumunu güncelle")
+@router.patch("/{cover_letter_id}/status", summary="Update cover letter status")
 async def patch_cover_letter_status(
     cover_letter_id: uuid.UUID,
     new_status: CoverLetterStatus,

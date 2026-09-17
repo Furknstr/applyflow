@@ -7,7 +7,7 @@ from applyflow.schemas.enums import ApplicationStatus
 
 
 class ApplicationStatusLog(SQLModel, table=True):
-    """Bir ilanın durum değişiklik geçmişi (audit trail)."""
+    """Audit trail of a job's status changes."""
 
     __tablename__ = "application_status_logs"
 

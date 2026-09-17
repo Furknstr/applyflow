@@ -11,7 +11,7 @@ from applyflow.schemas.enums import CoverLetterStatus
 async def create_cover_letter(
     session: AsyncSession, cover_letter: CoverLetter
 ) -> CoverLetter:
-    """Ön yazı taslağını kaydet."""
+    """Save cover letter draft."""
     session.add(cover_letter)
     await session.commit()
     await session.refresh(cover_letter)
@@ -21,7 +21,7 @@ async def create_cover_letter(
 async def get_cover_letter(
     session: AsyncSession, cover_letter_id: uuid.UUID
 ) -> CoverLetter | None:
-    """ID ile ön yazı getir."""
+    """Get cover letter by ID."""
     result = await session.execute(
         select(CoverLetter).where(CoverLetter.id == cover_letter_id)
     )
@@ -31,7 +31,7 @@ async def get_cover_letter(
 async def get_cover_letter_by_job(
     session: AsyncSession, job_id: uuid.UUID
 ) -> CoverLetter | None:
-    """Belirli bir ilanın en son ön yazısını getir."""
+    """Get the latest cover letter for a specific job."""
     result = await session.execute(
         select(CoverLetter)
         .where(CoverLetter.job_id == job_id)
@@ -46,7 +46,7 @@ async def update_cover_letter_status(
     cover_letter_id: uuid.UUID,
     new_status: CoverLetterStatus,
 ) -> CoverLetter | None:
-    """Ön yazının durumunu güncelle."""
+    """Update cover letter status."""
     cover_letter = await get_cover_letter(session, cover_letter_id)
     if cover_letter is None:
         return None

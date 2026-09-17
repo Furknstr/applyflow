@@ -1,6 +1,6 @@
 """
-Matches router — eşleşme sonuçları.
-Faz 4'te Matcher Agent entegre edilecek.
+Matches router — match results.
+Matcher Agent will be integrated in Phase 4.
 """
 
 import uuid
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/matches", tags=["matches"])
 
 
-@router.get("/{job_id}", summary="İlana ait eşleşme sonucunu getir")
+@router.get("/{job_id}", summary="Get match result for job")
 async def get_match(
     job_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),

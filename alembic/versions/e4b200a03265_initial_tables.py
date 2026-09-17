@@ -20,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    """Tüm temel tabloları oluştur."""
+    """Create all base tables."""
 
     # --- jobs ---
     op.create_table(
@@ -82,7 +82,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    """Tüm tabloları sil."""
+    """Drop all tables."""
     op.drop_table("application_status_logs")
     op.drop_table("cover_letters")
     op.drop_table("match_results")
