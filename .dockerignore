@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Sanal ortam (Docker'da yeniden kurulur)
+.venv/
+
+# Ortam dosyaları
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Test & coverage
+.coverage
+htmlcov/
+coverage.xml
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Dökümantasyon (opsiyonel)
+docs/
+plans/
+
+# OS
+.DS_Store
+Thumbs.db
